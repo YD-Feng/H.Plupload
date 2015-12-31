@@ -2,21 +2,10 @@ var gulp = require('gulp'),
 
     copy = require('gulp-copy'),
     rename = require('gulp-rename'),
-
-    browserify = require('gulp-browserify'),
-    concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
 
-    less = require('gulp-less'),
-    autoprefixer = require('gulp-autoprefixer'),
-    minifycss = require('gulp-minify-css'),
-
     util = require('gulp-util'),
-    notify = require('gulp-notify'),
-
-    argv = require('minimist')(process.argv.slice(2)),
-    path = require('path'),
-    fs = require('fs');
+    notify = require('gulp-notify');
 
 //【内部调用函数】控制台错误处理
 function handleErrors () {
