@@ -39,66 +39,67 @@ if (window.console == undefined) {
 
 H.plupload = function (options) {
     var initHolder = $.extend({}, options.init);
+    
     delete options.init;
 
     var uploader = new plupload.Uploader($.extend({
-        runtimes : 'html5,flash,silverlight,html4',
-        flash_swf_url : '/Content/vendor/Moxie.swf',
-        silverlight_xap_url : '/Content/vendor/Moxie.xap',
-        multi_selection : true,
+        runtimes: 'html5,flash,silverlight,html4',
+        flash_swf_url: '/Content/vendor/Moxie.swf',
+        silverlight_xap_url: '/Content/vendor/Moxie.xap',
+        multi_selection: true,
 
-        filters : {
-            max_file_size : '500kb',
-            mime_types : [
+        filters: {
+            max_file_size: '500kb',
+            mime_types: [
                 {
-                    title : 'Image files',
-                    extensions : 'jpg,gif,png'
+                    title: 'Image files',
+                    extensions: 'jpg,gif,png'
                 },{
-                    title : 'Zip files',
-                    extensions : 'zip'
+                    title: 'Zip files',
+                    extensions: 'zip'
                 }
             ],
-            prevent_duplicates : false
+            prevent_duplicates: false
         },
 
         init: (function () {
             return $.extend({}, initHolder, {
-
-                BeforeUpload : function (up, file) {
+                BeforeUpload: function (up, file) {
                     if (typeof options.multipart_params == 'function') {
                         up.setOption('multipart_params', options.multipart_params());
                     }
                     !!!(initHolder && initHolder.BeforeUpload) || initHolder.BeforeUpload(up, file);
                 },
 
-                FilesAdded : function (up, file) {
+                FilesAdded: function (up, file) {
                     !!!initHolder.FilesAdded || initHolder.FilesAdded(up, file);
                     if (options.autoUpload) {
                         uploader.start()
                     }
                 },
 
-                FileUploaded : function (up, files, response) {
+                FileUploaded: function (up, files, response) {
                     var json = {};
                     try {
                         json = $.parseJSON(response.response)
                     }
-                    catch(err) {
+                    catch (err) {
 
                     }
                     finally {
                         !!!initHolder.FileUploaded || initHolder.FileUploaded(up, files, response, json);
                     }
                 },
-                Error: function(up, err){
+                
+                Error: function (up, err) {
                     console.log(err.code);
                     console.log(err.message);
 
-                    if(err.code == -600) {
+                    if (err.code == -600) {
                         err.message = "上传文件不能大于" + up.getOption().filters.max_file_size;
                     }
 
-                    if(err.code == -601) {
+                    if (err.code == -601) {
                         err.message = "该上传文件的格式是不允许的, 请重新选择文件上传";
                     }
 
